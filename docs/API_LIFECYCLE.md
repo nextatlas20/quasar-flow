@@ -15,18 +15,20 @@ drop-in substitute.
 
 | Module | Symbol | Remove in | Replacement | Status |
 | --- | --- | --- | --- | --- |
+| quasar.clients.async_http | AsyncSocketAdapter | 3.0 | AsyncHttpClient | pending |
+| quasar.clients.graphql | GraphQLBatchShim | 2.5 | GraphQLTransport.batch | pending |
 | quasar.clients.graphql | GraphQLLegacyTransport | 2.5 | GraphQLTransport | tracked |
-| quasar.clients.http | LegacySession | 2.5 | HttpClient | migrating |
-| quasar.clients.http | encode_query | 2.4 | urlencode_params | tracked |
-| quasar.clients.http | open_legacy | 2.5 | HttpClient.request | tracked |
+| quasar.clients.http | LegacySession | 2.6 | HttpClient | migrating |
+| quasar.clients.http | open_legacy | 2.6 | HttpClient.request | tracked |
 | quasar.core.config | load_env_config | 2.5 | ConfigLoader.from_env | migrating |
+| quasar.core.pagination | OffsetCursor | 2.6 | — | pending |
 | quasar.core.pagination | page_walk | 2.7 | Paginator | tracked |
-| quasar.core.retry | LegacyBackoff | 2.5 | ExponentialBackoff | waived |
-| quasar.core.retry | retry_forever | 2.4 | RetryPolicy | tracked |
+| quasar.core.retry | LegacyBackoff | 2.6 | ExponentialBackoff | waived |
+| quasar.core.retry | retry_with_jitter | 2.5 | RetryPolicy | pending |
 | quasar.streams.buffers | RingBufferV1 | 3.0 | RingBuffer | migrating |
-| quasar.streams.buffers | flush_all | 2.4 | — | waived |
+| quasar.streams.buffers | compact_all | 3.0 | RingBuffer.compact | pending |
 | quasar.streams.window | WindowAggregatorSimple | 2.6 | WindowAggregator | tracked |
-| quasar.utils.serialization | dumps_pickle | 2.6 | dumps_msgpack | migrating |
+| quasar.utils.serialization | dumps_pickle | 2.6 | dumps_msgpack_v2 | migrating |
 | quasar.utils.timeparse | parse_iso | 2.5 | parse_timestamp | tracked |
 
 ### Removal procedure
