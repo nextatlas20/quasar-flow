@@ -28,3 +28,15 @@ def page_walk(fetch: Callable[..., List[Dict[str, Any]]], page_size: int = 50) -
     for page in Paginator(page_size).pages(fetch):
         records.extend(page)
     return records
+
+
+@deprecated(since="2.4", remove_in="2.6", replacement="")
+class OffsetCursor:
+    """Offset/limit cursor used by the legacy REST list endpoints."""
+
+    def __init__(self, offset: int = 0, limit: int = 50) -> None:
+        self.offset = offset
+        self.limit = limit
+
+    def next(self) -> "OffsetCursor":
+        return OffsetCursor(self.offset + self.limit, self.limit)

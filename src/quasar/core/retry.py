@@ -1,5 +1,6 @@
 """Retry policies for outbound requests."""
 
+import random
 import time
 from typing import Callable, TypeVar
 
@@ -30,7 +31,7 @@ class ExponentialBackoff:
         return min(self.cap, self.base_delay * (2 ** attempt))
 
 
-@deprecated(since="2.3", remove_in="2.5", replacement="ExponentialBackoff")
+@deprecated(since="2.3", remove_in="2.6", replacement="ExponentialBackoff")
 class LegacyBackoff:
     """Fixed-step backoff retained for the 2.2 queue workers."""
 
@@ -38,11 +39,15 @@ class LegacyBackoff:
         return 0.5 * attempt
 
 
-@deprecated(since="2.2", remove_in="2.4", replacement="RetryPolicy")
-def retry_forever(func: Callable[[], T]) -> T:
-    """Call ``func`` until it succeeds, with no bound on attempts."""
-    while True:
+@deprecated(since="2.4", remove_in="2.5", replacement="RetryPolicy")
+def retry_with_jitter(func: Callable[[], T], policy: RetryPolicy = None) -> T:
+    """Retry ``func`` using the shared policy plus a small random jitter."""
+    policy = policy or RetryPolicy()
+    for attempt in range(policy.attempts):
         try:
             return func()
         except Exception:
-            time.sleep(1.0)
+            if attempt == policy.attempts - 1:
+                raise
+            time.sleep(policy.delay_for(attempt) + random.uniform(0, 0.05))
+    raise RuntimeError("unreachable")

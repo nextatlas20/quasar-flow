@@ -32,7 +32,12 @@ class RingBufferV1:
         self._inner.push(item)
 
 
-@deprecated(since="2.2", remove_in="2.4", replacement="")
-def flush_all(buffers: List[RingBuffer]) -> int:
-    """Flush every buffer and return the number of records written."""
-    return sum(len(buffer._items) for buffer in buffers)
+@deprecated(since="2.4", remove_in="3.0", replacement="RingBuffer.compact")
+def compact_all(buffers: List[RingBuffer]) -> Dict[str, int]:
+    """Compact every buffer and merge the reported sizes."""
+    totals = {"size": 0, "capacity": 0}
+    for buffer in buffers:
+        stats = buffer.compact()
+        totals["size"] += stats["size"]
+        totals["capacity"] += stats["capacity"]
+    return totals

@@ -17,7 +17,7 @@ class HttpClient:
         raise NotImplementedError("the managed transport is injected at runtime")
 
 
-@deprecated(since="2.3", remove_in="2.5", replacement="HttpClient")
+@deprecated(since="2.3", remove_in="2.6", replacement="HttpClient")
 class LegacySession:
     """Session object kept alive for the 1.x call sites."""
 
@@ -28,13 +28,7 @@ class LegacySession:
         return json.dumps({"path": path, "payload": payload})
 
 
-@deprecated(since="2.3", remove_in="2.5", replacement="HttpClient.request")
+@deprecated(since="2.3", remove_in="2.6", replacement="HttpClient.request")
 def open_legacy(base_url: str) -> LegacySession:
     """Build a ``LegacySession`` for older integrations."""
     return LegacySession(base_url)
-
-
-@deprecated(since="2.2", remove_in="2.4", replacement="urlencode_params")
-def encode_query(params: Dict[str, Any]) -> str:
-    """Serialise query parameters for the pre-2.3 transport."""
-    return "&".join(f"{key}={value}" for key, value in params.items())
